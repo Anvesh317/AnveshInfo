@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anvesh's AI Chatbot</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #121212;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Bot Description */
+        .bot-description {
+            text-align: center;
+            margin-bottom: 20px;
+            max-width: 70%;
+        }
+
+        .bot-description h2 {
+            font-size: 22px;
+            color: #00bfff;
+        }
+
+        .bot-description p {
+            font-size: 16px;
+            color: #ccc;
+        }
+
+        /* Chat Container */
+        .chat-container {
+            width: 80%;
+            height: 70vh;
+            display: flex;
+            flex-direction: column;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            background: #181818;
+        }
+
+        /* Chat Box */
+        .chat-box {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Messages */
+        .message {
+            padding: 12px 18px;
+            border-radius: 15px;
+            margin: 8px 0;
+            max-width: 75%;
+            font-size: 15px;
+            word-wrap: break-word;
+        }
+
+        .user {
+            background: #007BFF;
+            color: white;
+            align-self: flex-end;
+        }
+
+        .bot {
+            background: #333;
+            color: white;
+            align-self: flex-start;
+        }
+
+        /* Input Area */
+        .input-container {
+            display: flex;
+            padding: 10px;
+            background: #1e1e1e;
+            border-top: 2px solid #333;
+        }
+
+        input {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            outline: none;
+            font-size: 15px;
+            background: #222;
+            color: white;
+            border-radius: 25px;
+            padding-left: 15px;
+        }
+
+        button {
+            padding: 12px 18px;
+            border: none;
+            background: #007BFF;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 50%;
+            margin-left: 10px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="bot-description">
+        <h2>Welcome to Anvesh's AI Chatbot</h2>
+        <p>This chatbot is designed to provide information about Manne Anvesh Kumar, his education, skills, projects, and career goals. Feel free to ask anything related to him!</p>
+    </div>
+
+    <div class="chat-container">
+        <div class="chat-box" id="messages"></div>
+        <div class="input-container">
+            <input type="text" id="userInput" placeholder="Ask about Anvesh..." onkeypress="handleKeyPress(event)">
+            <button onclick="sendMessage()">➤</button>
+        </div>
+    </div>
+
+    <script>
+        const API_KEY = "OjVPmJH3WjKBECyrAy6eqHEZdSd0fauD"; // Replace with your actual Mistral API key
+
+        async function getMistralResponse(userText) {
+            const endpoint = "https://api.mistral.ai/v1/chat/completions";
+
+            const requestBody = {
+                model: "mistral-medium",
+                messages: [
+                    { role: "system", content: `You are an AI chatbot designed to provide information strictly about Manne Anvesh Kumar.
+            
+                    - ❌ You are NOT a general AI assistant.
+                    - ✅ You can ONLY answer questions about Anvesh's education, skills, projects, and achievements.
+                    - ❌ DO NOT assume or generate details that are not provided.
+                    - ✅ Keep responses concise and structured.
+                    - ✅ If the response is too long, provide information in parts and say:  
+                      "Would you like to see more details? Type 'More' to continue."
+            
+                    📌 **Basic Details:**  
+                    • 👤 **Full Name:** Manne Anvesh Kumar  
+                    • 📍 **Location:** Hyderabad, India  
+                    • 📞 **Phone:** +91 9110553896  
+                    • 📧 **Email:** anveshkumar731@gmail.com  
+                    • 🔗 **LinkedIn:** [Click Here](https://www.linkedin.com/in/manneanvesh/)  
+                    • 💻 **GitHub:** [Click Here](https://github.com/Anvesh317)  
+            
+                    📚 **Education:**  
+                    • 🎓 **MLR Institute of Technology** – B.Tech in CSE (2021-2025) | **GPA: 8.19**  
+                    • 🏫 **Narayana Junior College** – MPC (2019-2021) | **GPA: 9.2**  
+                    • 🏫 **St. Paul's Hi-Tech High School** (2018-2019) | **GPA: 9.5**  
+            
+                    🏢 **Internships & Experience:**  
+                    • 🏆 **Career Expert Intern at ScoutBetter** – Customer Support, Career Counseling, Client Engagement  
+                    • 🤖 **Google AI/ML Virtual Internship** – AI/ML concepts, Predictive Modeling, Data Preprocessing  
+            
+                    🔧 **Projects:**  
+                    • ✅ **To-Do App** (HTML, CSS, JS) – Task management system  
+                    • ✅ **Social Networking App** – Friends, posts, likes system  
+                    • ✅ **E-Waste Facility Locator** (In Progress) – Helps users locate e-waste disposal facilities  
+            
+                    🏆 **Certifications & Skills:**  
+                    • 🏅 **PCAP: Programming Essentials in Python** (Cisco)  
+                    • 🏅 **JavaScript Essentials 1** (Cisco & OpenEDG)  
+                    • 🏅 **Java (Basic)** (HackerRank)  
+                    • 🏆 **Silver Badge in Problem-Solving & Python** (HackerRank)  
+            
+                    🔹 **IMPORTANT INSTRUCTIONS:**  
+                    - Answer ONLY based on the provided details.  
+                    - DO NOT generate additional information that is not included above.  
+                    - If the user asks for something not listed, say:  
+                      "I can only provide confirmed information about Manne Anvesh Kumar based on available details."  
+                    - ❌ DO NOT provide a full resume when asked for basic identity information.
+                    - ✅ If the user explicitly asks for detailed information (e.g., "Give full details about Anvesh"), then only provide more.
+                    - ✅ If the user asks **"Who is Manne Anvesh Kumar?"**, respond with:  
+                     "Manne Anvesh Kumar is a Computer Science student from Hyderabad, India, currently pursuing a B.Tech in CSE at MLR Institute of Technology (2021-2025)."
+                    - ❌ DO NOT provide a full resume when asked for basic identity information.
+                    - ✅ Keep responses concise and structured.
+                    - ❌ DO NOT assume or generate details that are not provided.
+                    - ❌ You are NOT a general AI assistant.
+                - ✅ You can ONLY answer questions about Anvesh's education, skills, projects, and achievements.
+                - ✅ Keep responses **concise and structured, but complete**.
+                - ❌ DO NOT break responses into unnecessary follow-ups like "Would you like to see more?"
+                - ✅ If the user asks for education, provide **full education details in one response**.
+                - ✅ If the user asks about projects, provide **all project details in one response**.
+                - ✅ If the user asks about internships, provide **all internship details in one response**.
+                
+                **Example Responses:**
+                
+                **User:** "Tell me about Anvesh's education."  
+                    **Bot:**  
+                    📚 **Education:**  
+                    <ul>
+                        <li>🎓 <b>MLR Institute of Technology</b> – B.Tech in CSE (2021-2025) | <b>GPA: 8.19</b></li>
+                        <li>🏫 <b>Narayana Junior College</b> – MPC (2019-2021) | <b>GPA: 9.2</b></li>
+                        <li>🏫 <b>St. Paul's Hi-Tech High School</b> (2018-2019) | <b>GPA: 9.5</b></li>
+                    </ul>
+
+                    **User:** "Tell me about his projects."  
+                    **Bot:**  
+                    🔧 **Projects:**  
+                    <ul>
+                        <li>✅ <b>To-Do App</b> – Task management system (HTML, CSS, JavaScript)</li>
+                        <li>✅ <b>Social Networking App</b> – Friends, posts, likes system</li>
+                        <li>✅ <b>E-Waste Facility Locator</b> – Helps users locate disposal facilities</li>
+                    </ul>
+
+                    
+                    **User Question:** ${userText}  
+                    **Bot Response:**` },
+                    { role: "user", content: userText }
+                ],
+                max_tokens: 800, // Increased token limit to allow longer responses
+                temperature: 0.6
+            };
+            
+
+            try {
+                const response = await fetch(endpoint, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${API_KEY}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+
+                if (!response.ok) {
+                    throw new Error("No response from Mistral API.");
+                }
+
+                const data = await response.json();
+                return formatResponse(data.choices[0].message.content.trim());
+            } catch (error) {
+                console.error("Error:", error);
+                return "⚠️ Sorry, something went wrong. Please try again later.";
+            }
+        }
+
+        // Format response properly
+        function formatResponse(text) {
+            return text
+                .replace(/\*\*/g, "") // Remove unnecessary **bold** markers
+                .replace(/📚/g, "<br><b>📚 Education:</b><br>")  
+                .replace(/🏢/g, "<br><b>🏢 Internships & Experience:</b><br>")  
+                .replace(/🔧/g, "<br><b>🔧 Projects:</b><br>")  
+                .replace(/🏆/g, "<br><b>🏆 Certifications & Skills:</b><br>")  
+                .replace(/<ul>/g, "<ul style='padding-left: 20px;'>")  // Indent bullet points
+                .replace(/\n/g, "<br>");   // Convert new lines to HTML line breaks
+        }
+
+
+        async function sendMessage() {
+            let userText = document.getElementById("userInput").value.trim();
+            let chatBox = document.getElementById("messages");
+
+            if (userText === "") return;
+
+            // Display user message with user icon 🧑‍💻
+            chatBox.innerHTML += `<div class="message user">🧑‍💻 ${userText}</div>`;
+            document.getElementById("userInput").value = "";
+
+            // Show typing effect with bot icon 🤖
+            chatBox.innerHTML += `<div class="message bot">🤖 Typing...</div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // Get AI response
+            try {
+                let botResponse = await getMistralResponse(userText);
+                chatBox.innerHTML = chatBox.innerHTML.replace(`<div class="message bot">🤖 Typing...</div>`, `<div class="message bot">🤖 ${botResponse}</div>`);
+            } catch (error) {
+                chatBox.innerHTML = chatBox.innerHTML.replace(`<div class="message bot">🤖 Typing...</div>`, `<div class="message bot">🤖 ⚠️ Sorry, something went wrong.</div>`);
+            }
+
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        }
+    </script>
+</body>
+</html>
